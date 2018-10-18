@@ -5,6 +5,6 @@ plugins {
 
 group 'qwezey'
 version '1.0'
-mainClassName = 'Main.Main'
+mainClassName = 'main.Main'
 
 sourceCompatibility = 1.8
