@@ -1,0 +1,7 @@
+this is just a simple file to read
+Ctrl-C
+$ git status
+On branch master
+Initial commit
+Untracked files:
+README
