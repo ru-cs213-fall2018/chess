@@ -1,15 +1,38 @@
 package board;
 
+import chess.Color;
+
 /**
  * Represents a chess board
  * @author Ammaar Muhammad Iqbal
  */
 public class Board {
 
+    private static final int numCols = 8;
+    private static final int numRows = 8;
     private Square[][] grid;
 
+    /**
+     * Creates a new board and fills the grid appropriately
+     */
     public Board() {
-        this.grid = new Square[8][8];
+
+        // Initialize the grid
+        this.grid = new Square[Board.numCols][Board.numRows];
+
+        // Fill the grid
+        for (int i = 0; i < Board.numCols; i++) {
+            for (int j = 0; j < Board.numRows; j++) {
+
+                // Alternate black and white squares
+                Color color;
+                if ((i+j)%2 == 0)
+                    color = Color.black;
+                else
+                    color = Color.white;
+                this.grid[i][j] = new Square(color);
+            }
+        }
     }
 
     /**
@@ -51,5 +74,19 @@ public class Board {
 
         // Return the appropriate square
         return this.grid[x][y];
+    }
+
+    /**
+     * @return ASCII representation of how the board looks
+     */
+    @Override
+    public String toString() {
+        String ret = "";
+        for (int j = Board.numRows; j > 0; j--) {
+            for (int i = 0; i < Board.numCols; i++)
+                ret += this.grid[i][j-1] + " ";
+            ret += j + "\n";
+        }
+        return ret + " a  b  c  d  e  f  g  h";
     }
 }

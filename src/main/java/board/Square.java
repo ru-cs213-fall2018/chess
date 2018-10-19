@@ -51,4 +51,14 @@ public class Square {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
+
+    /**
+     * @return ASCII representation of what the square looks like
+     */
+    @Override
+    public String toString() {
+        if (this.piece != null) return this.piece.toString();
+        else if (this.color == color.black) return "##";
+        else return "  ";
+    }
 }
