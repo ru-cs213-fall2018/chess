@@ -77,6 +77,19 @@ public class Board {
     }
 
     /**
+     * Get a square from the board
+     * @param fileRank A string that contains the file at the
+     *                 first char and rank at the second
+     * @return The requested square
+     * @throws Exception If the requested square doesn't exist
+     */
+    public Square getSquare(String fileRank) throws Exception {
+        char file = fileRank.charAt(0);
+        int rank = Integer.parseInt(String.valueOf(fileRank.charAt(1)));
+        return this.getSquare(file, rank);
+    }
+
+    /**
      * @return ASCII representation of how the board looks
      */
     @Override
