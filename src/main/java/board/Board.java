@@ -1,6 +1,7 @@
 package board;
 
 import chess.Color;
+import piece.Pawn;
 
 /**
  * Represents a chess board
@@ -32,6 +33,18 @@ public class Board {
                     color = Color.white;
                 this.grid[i][j] = new Square(new Coordinate(i, j), color);
             }
+        }
+
+        // Add white pawns
+        for (int i = 0; i < this.numCols; i++) {
+            Square square = grid[i][1];
+            square.setPiece(new Pawn(this, square, Color.white));
+        }
+
+        // Add black pawns
+        for (int i = 0; i < this.numCols; i++) {
+            Square square = grid[i][6];
+            square.setPiece(new Pawn(this, square, Color.black));
         }
     }
 
