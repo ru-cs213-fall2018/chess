@@ -9,25 +9,36 @@ import piece.Piece;
  */
 public class Square {
 
+    private Coordinate coordinate;
     private Color color;
     private Piece piece;
 
     /**
      * Creates a new square
+     * @param coordinate Coordinate of the square on the grid
      * @param color Color of the square
      * @param piece Piece on the square
      */
-    Square(Color color, Piece piece) {
+    Square(Coordinate coordinate, Color color, Piece piece) {
+        this.coordinate = coordinate;
         this.color = color;
         this.piece = piece;
     }
 
     /**
      * Creates a new square without a piece
+     * @param coordinate Coordinate of the square on the grid
      * @param color Color of the square
      */
-    Square(Color color) {
-        this(color,null);
+    Square(Coordinate coordinate, Color color) {
+        this(coordinate, color,null);
+    }
+
+    /**
+     * @return Coordinate of the square
+     */
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     /**
@@ -45,11 +56,27 @@ public class Square {
     }
 
     /**
-     * Set a piece on this square
+     * Set a piece on this square and update the piece's
+     * square to this square
      * @param piece The piece to add or null if no piece
      */
     public void setPiece(Piece piece) {
+        piece.setSquare(this);
         this.piece = piece;
+    }
+
+    /**
+     * Remove the piece from the square
+     */
+    public void removePiece() {
+        this.piece = null;
+    }
+
+    /**
+     * @return If this square has a piece on it
+     */
+    public boolean hasPiece() {
+        return this.piece != null;
     }
 
     /**

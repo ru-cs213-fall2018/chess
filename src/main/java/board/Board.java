@@ -30,7 +30,7 @@ public class Board {
                     color = Color.black;
                 else
                     color = Color.white;
-                this.grid[i][j] = new Square(color);
+                this.grid[i][j] = new Square(new Coordinate(i, j), color);
             }
         }
     }
