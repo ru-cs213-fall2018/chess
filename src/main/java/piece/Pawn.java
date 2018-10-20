@@ -8,6 +8,10 @@ import chess.Color;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a pawn
+ * @author Ammaar Muhammad Iqbal
+ */
 public class Pawn extends Piece {
 
     private boolean moved;
@@ -18,35 +22,32 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void moveTo(Coordinate c) throws Exception {
-
-        // Check if end has same color piece
-        Square end = this.board.getSquare(c);
-        if (end.hasPiece() && end.getPiece().color == this.color)
-            throw Piece.ILLEGAL_MOVE;
+    public void moveTo(Square square) throws Exception {
 
         // Check if x value good
         Coordinate start = this.square.getCoordinate();
-        if (start.getX() != c.getX()) throw Piece.ILLEGAL_MOVE;
+        Coordinate end = square.getCoordinate();
+        if (start.getX() != end.getX())
+            throw new Exception("Cannot move there");
 
         // Check if y movement is good
-        boolean isWhite = this.color == Color.white;
+        boolean isWhite = this.color == Color.White;
         int maxYDiff = this.moved ? 1 : 2;
-        int displacement = c.getY() - start.getY();
+        int displacement = end.getY() - start.getY();
         int forwardDisplacement = isWhite ? displacement : -displacement;
         if (forwardDisplacement < 1 || forwardDisplacement > maxYDiff)
-            throw Piece.ILLEGAL_MOVE;
+            throw new Exception("Cannot move there");
 
         // Check if path is clear
         ArrayList<Square> path = new ArrayList<>();
-        for (int i = isWhite ? start.getY() : c.getY();
-             i <= (isWhite ? c.getY() : start.getY()); i++)
+        for (int i = isWhite ? start.getY() : end.getY();
+             i <= (isWhite ? end.getY() : start.getY()); i++)
             path.add(this.board.getSquare(new Coordinate(start.getX(), i)));
-        if (!new Path(path).isClear()) throw Piece.ILLEGAL_MOVE;
+        if (!new Path(path).isClear())
+            throw new Exception("There is something blocking your way");
 
         // Move the piece
-        end.setPiece(this);
-        this.square.removePiece();
+        this.goTo(square);
         this.moved = true;
     }
 

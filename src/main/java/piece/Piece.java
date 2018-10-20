@@ -1,7 +1,6 @@
 package piece;
 
 import board.Board;
-import board.Coordinate;
 import board.Square;
 import chess.Color;
 
@@ -10,8 +9,6 @@ import chess.Color;
  * @author Ammaar Muhammad Iqbal
  */
 public abstract class Piece {
-
-    protected static final Exception ILLEGAL_MOVE = new Exception("This move is illegal");
 
     protected Board board;
     protected Square square;
@@ -23,7 +20,22 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public abstract void moveTo(Coordinate c) throws Exception;
+    /**
+     * Moves the piece if allowed
+     * @param square The square to move the piece to.
+     *               Must be empty or have opponents piece.
+     * @throws Exception If you cannot move the piece to square
+     */
+    public abstract void moveTo(Square square) throws Exception;
+
+    /**
+     * Moves the piece without any check
+     * @param square Square to go to
+     */
+    protected void goTo(Square square) {
+        this.square.removePiece();
+        square.setPiece(this);
+    }
 
     /**
      * Update the square that this piece is on
@@ -33,9 +45,16 @@ public abstract class Piece {
         this.square = square;
     }
 
+    /**
+     * @return Color of the piece
+     */
+    public Color getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
-        if (this.color == Color.white) return "w";
+        if (this.color == Color.White) return "w";
         else return "b";
     }
 }

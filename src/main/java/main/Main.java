@@ -1,10 +1,10 @@
 package main;
 
-import board.Board;
+import game.Game;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board();
-        System.out.println(board);
+        Game game = new Game();
+        game.start();
     }
 }

@@ -85,7 +85,7 @@ public class Square {
     @Override
     public String toString() {
         if (this.piece != null) return this.piece.toString();
-        else if (this.color == color.black) return "##";
+        else if (this.color == color.Black) return "##";
         else return "  ";
     }
 }

@@ -28,9 +28,9 @@ public class Board {
                 // Alternate black and white squares
                 Color color;
                 if ((i+j)%2 == 0)
-                    color = Color.black;
+                    color = Color.Black;
                 else
-                    color = Color.white;
+                    color = Color.White;
                 this.grid[i][j] = new Square(new Coordinate(i, j), color);
             }
         }
@@ -38,13 +38,13 @@ public class Board {
         // Add white pawns
         for (int i = 0; i < this.numCols; i++) {
             Square square = grid[i][1];
-            square.setPiece(new Pawn(this, square, Color.white));
+            square.setPiece(new Pawn(this, square, Color.White));
         }
 
         // Add black pawns
         for (int i = 0; i < this.numCols; i++) {
             Square square = grid[i][6];
-            square.setPiece(new Pawn(this, square, Color.black));
+            square.setPiece(new Pawn(this, square, Color.Black));
         }
     }
 
@@ -55,10 +55,10 @@ public class Board {
      * @return The requested coordinate
      * @throws Exception If file or row doesn't exist
      */
-    public Coordinate getCoordinate(char file, int row) throws Exception {
+    public static Coordinate getCoordinate(char file, int row) throws Exception {
 
         // Check if row is valid
-        if (row > 8 || row < 1)
+        if (row > Board.numRows || row < 1)
             throw new Exception("Row " + row + " doesn't exist");
 
         // Set the right x and y values for grid
@@ -96,10 +96,10 @@ public class Board {
      * @return The requested coordinate
      * @throws Exception If the requested coordinate doesn't exist
      */
-    public Coordinate getCoordinate(String fileRank) throws Exception {
+    public static Coordinate getCoordinate(String fileRank) throws Exception {
         char file = fileRank.charAt(0);
         int rank = Integer.parseInt(String.valueOf(fileRank.charAt(1)));
-        return this.getCoordinate(file, rank);
+        return Board.getCoordinate(file, rank);
     }
 
     /**
@@ -119,7 +119,7 @@ public class Board {
      * @throws Exception If file or row doesn't exist
      */
     public Square getSquare(char file, int row) throws Exception {
-        Coordinate c = this.getCoordinate(file, row);
+        Coordinate c = Board.getCoordinate(file, row);
         return this.getSquare(c);
     }
 
@@ -131,7 +131,7 @@ public class Board {
      * @throws Exception If the requested square doesn't exist
      */
     public Square getSquare(String fileRank) throws Exception {
-        Coordinate c = this.getCoordinate(fileRank);
+        Coordinate c = Board.getCoordinate(fileRank);
         return this.getSquare(c);
     }
 
