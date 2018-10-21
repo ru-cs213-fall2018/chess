@@ -32,4 +32,16 @@ public class Coordinate {
     public int getY() {
         return y;
     }
+
+    /**
+     * @param obj Other object
+     * @return True if x and y values are equal, else false
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Coordinate))
+            return false;
+        Coordinate o = (Coordinate) obj;
+        return this.x == o.x && this.y == o.y;
+    }
 }
