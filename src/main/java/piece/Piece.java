@@ -15,6 +15,12 @@ public abstract class Piece {
     protected Square square;
     protected Color color;
 
+    /**
+     * Initializes a piece
+     * @param board Board the piece is on
+     * @param square Square the piece is on
+     * @param color Color of the piece
+     */
     public Piece(Board board, Square square, Color color) {
         this.board = board;
         this.square = square;
@@ -93,6 +99,9 @@ public abstract class Piece {
         return color;
     }
 
+    /**
+     * @return ASCII representation of color
+     */
     @Override
     public String toString() {
         if (this.color == Color.White) return "w";
