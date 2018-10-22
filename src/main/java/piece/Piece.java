@@ -45,8 +45,7 @@ public abstract class Piece {
     protected int yForward(int n) {
         Coordinate start = this.square.getCoordinate();
         boolean white = this.color == Color.White;
-        int forward = start.getY() + (white ? 1 : -1);
-        return forward * n;
+        return start.getY() + (white ? 1 : -1) * n;
     }
 
     /**
@@ -56,8 +55,7 @@ public abstract class Piece {
     protected int yBack(int n) {
         Coordinate start = this.square.getCoordinate();
         boolean white = this.color == Color.White;
-        int back = start.getY() + (white ? -1 : 1);
-        return back * n;
+        return start.getY() + (white ? -1 : 1) * n;
     }
 
     /**
@@ -67,8 +65,7 @@ public abstract class Piece {
     protected int xRight(int n) {
         Coordinate start = this.square.getCoordinate();
         boolean white = this.color == Color.White;
-        int right = start.getX() + (white ? 1 : -1);
-        return right * n;
+        return start.getX() + (white ? 1 : -1) * n;
     }
 
     /**
@@ -78,8 +75,7 @@ public abstract class Piece {
     protected int xLeft(int n) {
         Coordinate start = this.square.getCoordinate();
         boolean white = this.color == Color.White;
-        int left = start.getX() + (white ? -1 : 1);
-        return left * n;
+        return start.getX() + (white ? -1 : 1) * n;
     }
 
     /**
