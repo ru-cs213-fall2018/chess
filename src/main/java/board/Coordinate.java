@@ -44,4 +44,9 @@ public class Coordinate {
         Coordinate o = (Coordinate) obj;
         return this.x == o.x && this.y == o.y;
     }
+
+    @Override
+    public String toString() {
+        return ")" + this.x + ", " + this.y + ")";
+    }
 }
