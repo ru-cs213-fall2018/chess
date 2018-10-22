@@ -2,7 +2,6 @@ package piece;
 
 import board.Board;
 import board.Coordinate;
-import board.Path;
 import board.Square;
 import chess.Color;
 
@@ -24,33 +23,37 @@ public class Pawn extends Piece {
     @Override
     public void moveTo(Square square) throws Exception {
 
-        // Check if x value good
+        // Get the coordinates
         Coordinate start = this.square.getCoordinate();
         Coordinate end = square.getCoordinate();
-        if (start.getX() != end.getX())
-            throw new Exception("Cannot move there");
 
-        // Check if y movement is good
-        boolean isWhite = this.color == Color.White;
-        int maxYDiff = this.moved ? 1 : 2;
-        int displacement = end.getY() - start.getY();
-        int forwardDisplacement = isWhite ? displacement : -displacement;
-        if (forwardDisplacement < 1 || forwardDisplacement > maxYDiff)
-            throw new Exception("Cannot move there");
+        // Create a lists of allowed movements
+        ArrayList<Coordinate> forward = new ArrayList<>();
+        forward.add(new Coordinate(start.getX(), this.yForward(1)));
+        if (!this.moved) forward.add(new Coordinate(start.getX(), this.yForward(2)));
+        ArrayList<Coordinate> diagnals = new ArrayList<>();
+        diagnals.add(new Coordinate(this.xLeft(1), this.yForward(1)));
+        diagnals.add(new Coordinate(this.xRight(1), this.yForward(1)));
 
-        // Check if path is clear
-        ArrayList<Square> path = new ArrayList<>();
-        for (int i = isWhite ? start.getY() : end.getY();
-             i <= (isWhite ? end.getY() : start.getY()); i++)
-            path.add(this.board.getSquare(new Coordinate(start.getX(), i)));
-        if (!new Path(path).isClear())
-            throw new Exception("There is something blocking your way");
+        // Verify destination with lists
+        if (diagnals.contains(end)) {
+            if (!square.hasPiece())
+                throw new Exception("A pawn can only attack there");
+        } else if (forward.contains(end)) {
+            for (Coordinate c : forward) {
+                if (this.board.getSquare(c).hasPiece())
+                    throw new Exception("Your path is blocked");
+            }
+        } else throw new Exception("A Pawn can't go there");
 
-        // Move the piece
+        // Move the pawn
         this.goTo(square);
         this.moved = true;
     }
 
+    /**
+     * @return ASCII representation of the pawn
+     */
     @Override
     public String toString() {
         return super.toString() + "p";
