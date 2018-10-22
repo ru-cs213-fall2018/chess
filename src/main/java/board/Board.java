@@ -103,6 +103,14 @@ public class Board {
     }
 
     /**
+     * @param c Coordinate to check it it is in the board
+     * @return True if it is in the board, false otherwise
+     */
+    public static boolean isInBoard(Coordinate c) {
+        return c.getX() >= 0 && c.getX() <= 7 && c.getY() >= 0 && c.getY() <= 7;
+    }
+
+    /**
      * Get a square from the board
      * @param c The coordinate of the requested square
      * @return The requested square
