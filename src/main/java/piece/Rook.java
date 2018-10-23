@@ -23,7 +23,7 @@ public class Rook extends Piece {
         out: for (int j = 0; j < 4; j++) {
             path.clear();
             Coordinate c = this.square.getCoordinate();
-            for (int i = 0; Board.isInBoard(c); i++) {
+            for (int i = 1; Board.isInBoard(c); i++) {
                 Square s = this.board.getSquare(c);
                 path.add(s);
                 if (square.equals(s)) {
@@ -39,7 +39,7 @@ public class Rook extends Piece {
 
         if (!found) throw new Exception("A rook can't move there");
         boolean clear = new Path(path).isClear();
-        if (!clear) throw new Exception("Your path is blocked");
+        if (!clear) throw new Exception("The rook's path is blocked");
 
         this.goTo(square);
     }
