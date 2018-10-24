@@ -3,6 +3,8 @@ package board;
 import chess.Color;
 import piece.Pawn;
 
+import java.util.List;
+
 /**
  * Represents a chess board
  * @author Ammaar Muhammad Iqbal
@@ -108,6 +110,20 @@ public class Board {
      */
     public static boolean isInBoard(Coordinate c) {
         return c.getX() >= 0 && c.getX() <= 7 && c.getY() >= 0 && c.getY() <= 7;
+    }
+
+    /**
+     * @param path List of squares that represent a path from
+     *             the first element to the last element
+     * @return True if all squares in between don't have a piece,
+     * false otherwise
+     */
+    public static boolean isPathClear(List<Square> path) {
+        for (int i = 1; i < path.size() - 1; i++) {
+            if (path.get(i).hasPiece())
+                return false;
+        }
+        return true;
     }
 
     /**

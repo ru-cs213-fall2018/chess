@@ -2,7 +2,6 @@ package piece;
 
 import board.Board;
 import board.Coordinate;
-import board.Path;
 import board.Square;
 import chess.Color;
 
@@ -14,6 +13,12 @@ import java.util.ArrayList;
  */
 public class Rook extends Piece {
 
+    /**
+     * Create a new rook
+     * @param board Board the rook is on
+     * @param square Square the rook is on
+     * @param color Color of the rook
+     */
     public Rook(Board board, Square square, Color color) {
         super(board, square, color);
     }
@@ -55,8 +60,7 @@ public class Rook extends Piece {
 
         // Check if found and path is clear
         if (!found) throw new Exception("A rook can't move there");
-        boolean clear = new Path(path).isClear();
-        if (!clear) throw new Exception("The rook's path is blocked");
+        if (!Board.isPathClear(path)) throw new Exception("The rook's path is blocked");
 
         // Move the piece
         this.goTo(square);
