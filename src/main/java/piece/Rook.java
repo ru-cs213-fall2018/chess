@@ -62,6 +62,10 @@ public class Rook extends Piece {
         this.goTo(square);
     }
 
+    /**
+     * ASCII representation of the rook
+     * @return
+     */
     @Override
     public String toString() {
         return super.toString() + "R";
