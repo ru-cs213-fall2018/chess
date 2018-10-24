@@ -5,7 +5,7 @@ import board.Coordinate;
 import board.Square;
 import chess.Color;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a pawn
@@ -15,40 +15,44 @@ public class Pawn extends Piece {
 
     private boolean moved;
 
+    /**
+     * Creates a new pawn
+     * @param board Board the pawn is on
+     * @param square Square the pawn is on
+     * @param color Color of the pawn
+     */
     public Pawn(Board board, Square square, Color color) {
-        super(board, square, color);
+        super(board, square, color, 3);
         this.moved = false;
     }
 
     @Override
     public void moveTo(Square square) throws Exception {
-
-        // Get the coordinates
-        Coordinate start = this.square.getCoordinate();
-        Coordinate end = square.getCoordinate();
-
-        // Create a lists of allowed movements
-        ArrayList<Coordinate> forward = new ArrayList<>();
-        forward.add(new Coordinate(start.getX(), this.yForward(1)));
-        if (!this.moved) forward.add(new Coordinate(start.getX(), this.yForward(2)));
-        ArrayList<Coordinate> diagnals = new ArrayList<>();
-        diagnals.add(new Coordinate(this.xLeft(1), this.yForward(1)));
-        diagnals.add(new Coordinate(this.xRight(1), this.yForward(1)));
-
-        // Verify destination with lists
-        if (diagnals.contains(end)) {
-            if (!square.hasPiece())
-                throw new Exception("A pawn can only attack there");
-        } else if (forward.contains(end)) {
-            for (Coordinate c : forward) {
-                if (this.board.getSquare(c).hasPiece())
-                    throw new Exception("Your path is blocked");
-            }
-        } else throw new Exception("A Pawn can't go there");
-
-        // Move the pawn
-        this.goTo(square);
+        super.moveTo(square);
         this.moved = true;
+    }
+
+    @Override
+    protected Coordinate nextCoordinate(int pathNum, int stepNum, Coordinate c) {
+        if (pathNum == 1) return new Coordinate(c.getX(), this.yForward(stepNum));
+        else if (pathNum == 2) return new Coordinate(this.xLeft(stepNum), this.yForward(stepNum));
+        else return new Coordinate(this.xRight(stepNum), this.yForward(stepNum));
+    }
+
+    @Override
+    protected boolean stepCondition(int pathNum, int stepNum, Coordinate c) {
+        if (pathNum == 1 && !this.moved) return stepNum <= 3;
+        else return stepNum <= 2;
+    }
+
+    @Override
+    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
+        if (!found) throw new Exception("Pawns can not move there");
+        if (!Board.isPathClear(path)) throw new Exception("The pawn's path is blocked");
+        if (pathNum == 1 && path.get(path.size() - 1).hasPiece())
+            throw new Exception("A pawn can not attack in this direction");
+        else if (pathNum != 1 && !path.get(path.size() - 1).hasPiece())
+            throw new Exception("A pawn can only attack in that direction");
     }
 
     /**

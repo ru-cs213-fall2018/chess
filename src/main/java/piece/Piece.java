@@ -94,7 +94,8 @@ public abstract class Piece {
      * Implement this to see if the piece should take the next step
      * when building the path to the destination
      * @param pathNum The number of the current path (1 to numPaths)
-     * @param stepNum The number of the current step in the path (starts at 1)
+     * @param stepNum The number of the current step in the path
+     *                (starts at 1 representing the starting position)
      * @param c The current coordinate, it is in the board
      * @return True if should take step, otherwise false
      */
