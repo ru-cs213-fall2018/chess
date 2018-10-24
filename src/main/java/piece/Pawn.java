@@ -5,7 +5,6 @@ import board.Coordinate;
 import board.Square;
 import chess.Color;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +15,12 @@ public class Pawn extends Piece {
 
     private boolean moved;
 
+    /**
+     * Creates a new pawn
+     * @param board Board the pawn is on
+     * @param square Square the pawn is on
+     * @param color Color of the pawn
+     */
     public Pawn(Board board, Square square, Color color) {
         super(board, square, color, 3);
         this.moved = false;
@@ -36,8 +41,8 @@ public class Pawn extends Piece {
 
     @Override
     protected boolean stepCondition(int pathNum, int stepNum, Coordinate c) {
-        if (pathNum == 1 && !this.moved) return stepNum <= 2;
-        else return stepNum <= 1;
+        if (pathNum == 1 && !this.moved) return stepNum <= 3;
+        else return stepNum <= 2;
     }
 
     @Override
