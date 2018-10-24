@@ -7,6 +7,10 @@ import chess.Color;
 
 import java.util.List;
 
+/**
+ * Represents a queen
+ * @author Ammaar Muhammad Iqbal
+ */
 public class Queen extends Piece {
 
     /**
