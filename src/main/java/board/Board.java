@@ -1,8 +1,9 @@
 package board;
 
 import chess.Color;
-import piece.Pawn;
+import piece.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,30 +22,28 @@ public class Board {
         // Initialize the grid
         this.grid = new Square[8][8];
 
-        // Fill the grid
+        // Fill the grid with squares
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-
-                // Alternate black and white squares
                 Color color;
-                if ((i+j)%2 == 0)
-                    color = Color.Black;
-                else
-                    color = Color.White;
+                if ((i+j)%2 == 0) color = Color.Black;
+                else color = Color.White;
                 this.grid[i][j] = new Square(new Coordinate(i, j), color);
             }
         }
 
-        // Add white pawns
-        for (int i = 0; i < 8; i++) {
-            Square square = grid[i][1];
-            square.setPiece(new Pawn(this, square, Color.White));
-        }
-
-        // Add black pawns
-        for (int i = 0; i < 8; i++) {
-            Square square = grid[i][6];
-            square.setPiece(new Pawn(this, square, Color.Black));
+        // Add pieces to the board
+        for (int i : new int[]{0,1,6,7}) {
+            Color color = i < 2 ? Color.White : Color.Black;
+            for (int j = 0; j < 8; j++) {
+                Square square = grid[j][i];
+                if (i == 1 || i == 6) square.setPiece(new Pawn(this, square, color));
+                else if (j == 0 || j ==7) square.setPiece(new Rook(this, square, color));
+                else if (j == 1 || j ==6) square.setPiece(new Knight(this, square, color));
+                else if (j == 2 || j ==5) square.setPiece(new Bishop(this, square, color));
+                else if (j == 3) square.setPiece(new Queen(this, square, color));
+                else square.setPiece(new King(this, square, color));
+            }
         }
     }
 
