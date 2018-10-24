@@ -5,7 +5,7 @@
 ### Prerequisites
 
 * Windows or UN*X
-* JRE 1.8 + (Java 8 or higher)
+* JDK 8 & JRE 1.8 + (Java 8 or higher)
 
 ### Compile in Windows
 
