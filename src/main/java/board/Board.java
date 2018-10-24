@@ -1,7 +1,12 @@
 package board;
 
 import chess.Color;
+import piece.King;
 import piece.Pawn;
+import piece.Queen;
+import piece.Knight;
+import piece.Rook;
+import piece.Bishop;
 
 import java.util.List;
 
@@ -48,7 +53,52 @@ public class Board {
             Square square = grid[i][6];
             square.setPiece(new Pawn(this, square, Color.Black));
         }
-    }
+        //Adding rest of pieces - Daniel
+        // Add King piece(White and Black
+        Square square = grid[4][0];
+        square .setPiece(new King(this,square, Color.White));
+        square = grid[4][7]; 
+        square.setPiece(new King(this,square,Color.Black));
+        
+        //Add Queen piece(White and Black)
+        square = grid[3][0];
+        square.setPiece(new Queen(this,square, Color.White));
+        square = grid[3][7];
+        square.setPiece(new Queen(this, square, Color.Black));
+        
+        //Add Knight piece(White and Black)
+        square = grid[6][0];
+        square.setPiece(new Knight(this, square, Color.White));
+        square = grid[1][0];
+        square.setPiece(new Knight(this, square, Color.White));
+        square = grid[6][7];
+        square.setPiece(new Knight(this, square, Color.Black));
+        square = grid[1][7];
+        square.setPiece(new Knight(this,square, Color.Black));
+        
+        //Add Bishop piece(white and black)
+        square = grid[2][0];
+        square.setPiece(new Bishop(this,square,Color.White));
+        square = grid[5][0];
+        square.setPiece(new Bishop(this,square, Color.White));
+        square = grid[2][7];
+        square.setPiece(new Bishop(this, square, Color.Black));
+        square = grid[5][7];
+        square.setPiece(new Bishop(this,square,Color.Black));
+        
+        //Add Rook piece(white and black)
+        square=grid[0][0];
+        square.setPiece(new Rook(this,square,Color.White));
+        square=grid[7][0];
+        square.setPiece(new Rook(this,square,Color.White));
+        square=grid[0][7];
+        square.setPiece(new Rook(this,square,Color.Black));
+        square=grid[7][7];
+        square.setPiece(new Rook(this,square,Color.Black));
+        
+  
+        
+    }	
 
     /**
      * Get coordinate of the grid
