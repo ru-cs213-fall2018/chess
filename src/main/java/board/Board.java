@@ -11,8 +11,6 @@ import java.util.List;
  */
 public class Board {
 
-    private static final int numCols = 8;
-    private static final int numRows = 8;
     private Square[][] grid;
 
     /**
@@ -21,11 +19,11 @@ public class Board {
     public Board() {
 
         // Initialize the grid
-        this.grid = new Square[Board.numCols][Board.numRows];
+        this.grid = new Square[8][8];
 
         // Fill the grid
-        for (int i = 0; i < Board.numCols; i++) {
-            for (int j = 0; j < Board.numRows; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
 
                 // Alternate black and white squares
                 Color color;
@@ -38,13 +36,13 @@ public class Board {
         }
 
         // Add white pawns
-        for (int i = 0; i < this.numCols; i++) {
+        for (int i = 0; i < 8; i++) {
             Square square = grid[i][1];
             square.setPiece(new Pawn(this, square, Color.White));
         }
 
         // Add black pawns
-        for (int i = 0; i < this.numCols; i++) {
+        for (int i = 0; i < 8; i++) {
             Square square = grid[i][6];
             square.setPiece(new Pawn(this, square, Color.Black));
         }
@@ -60,7 +58,7 @@ public class Board {
     public static Coordinate getCoordinate(char file, int row) throws Exception {
 
         // Check if row is valid
-        if (row > Board.numRows || row < 1)
+        if (row > 8 || row < 1)
             throw new Exception("Row " + row + " doesn't exist");
 
         // Set the right x and y values for grid
@@ -165,8 +163,8 @@ public class Board {
     @Override
     public String toString() {
         String ret = "";
-        for (int j = Board.numRows; j > 0; j--) {
-            for (int i = 0; i < Board.numCols; i++)
+        for (int j = 8; j > 0; j--) {
+            for (int i = 0; i < 8; i++)
                 ret += this.grid[i][j-1] + " ";
             ret += j + "\n";
         }
