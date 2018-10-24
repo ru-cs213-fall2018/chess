@@ -3,7 +3,6 @@ package board;
 import chess.Color;
 import piece.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
