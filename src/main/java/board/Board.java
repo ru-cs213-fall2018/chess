@@ -156,6 +156,28 @@ public class Board {
     }
 
     /**
+     * Check if square is safe from the opposing color
+     * @param square The square to check for safety
+     * @param color The color of the probably hypothetical piece
+     *              that would be on square. Basically checks if
+     *              any of the pieces of the opposite color can
+     *              attack this square.
+     * @return True if square is safe, false otherwise
+     */
+    public boolean isSafe(Square square, Color color) {
+        boolean ret = true;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Square s = this.grid[i][j];
+                Piece p = s.getPiece();
+                if (s.hasPiece() && p.getColor() != color && p.canMove(square) == null)
+                    ret = false;
+            }
+        }
+        return ret;
+    }
+
+    /**
      * @return ASCII representation of how the board looks
      */
     @Override
