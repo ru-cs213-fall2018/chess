@@ -27,9 +27,10 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void moveTo(Square square) throws Exception {
-        super.moveTo(square);
-        this.moved = true;
+    public String move(Square square) {
+        String ret = super.move(square);
+        if (ret == null) this.moved = true;
+        return ret;
     }
 
     @Override
@@ -46,13 +47,14 @@ public class Pawn extends Piece {
     }
 
     @Override
-    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
-        if (!found) throw new Exception("Pawns can not move there");
-        if (!Board.isPathClear(path)) throw new Exception("The pawn's path is blocked");
+    protected String canMove(boolean found, int pathNum, List<Square> path) {
+        if (!found) return "Pawns can not move there";
+        if (!Board.isPathClear(path)) return "The pawn's path is blocked";
         if (pathNum == 1 && path.get(path.size() - 1).hasPiece())
-            throw new Exception("A pawn can not attack in this direction");
+            return "A pawn can not attack in this direction";
         else if (pathNum != 1 && !path.get(path.size() - 1).hasPiece())
-            throw new Exception("A pawn can only attack in that direction");
+            return "A pawn can only attack in that direction";
+        return null;
     }
 
     /**

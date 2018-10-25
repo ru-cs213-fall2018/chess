@@ -37,9 +37,10 @@ public class Rook extends Piece {
     }
 
     @Override
-    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
-        if (!found) throw new Exception("A rook can't move there");
-        if (!Board.isPathClear(path)) throw new Exception("The rook's path is blocked");
+    protected String canMove(boolean found, int pathNum, List<Square> path) {
+        if (!found) return "A rook can't move there";
+        if (!Board.isPathClear(path)) return "The rook's path is blocked";
+        return null;
     }
 
     /**

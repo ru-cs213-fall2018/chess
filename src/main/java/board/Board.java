@@ -51,13 +51,13 @@ public class Board {
      * @param file File or column used to get x value
      * @param row Row used to get y value
      * @return The requested coordinate
-     * @throws Exception If file or row doesn't exist
+     * @throws IndexOutOfBoundsException If file or row doesn't exist
      */
-    public static Coordinate getCoordinate(char file, int row) throws Exception {
+    public static Coordinate getCoordinate(char file, int row) throws IndexOutOfBoundsException {
 
         // Check if row is valid
         if (row > 8 || row < 1)
-            throw new Exception("Row " + row + " doesn't exist");
+            throw new IndexOutOfBoundsException("Row " + row + " doesn't exist");
 
         // Set the right x and y values for grid
         int y = row - 1;
@@ -81,7 +81,7 @@ public class Board {
 
         // Check if file is valid
         else
-            throw new Exception("File " + file + " doesn't exist");
+            throw new IndexOutOfBoundsException("File " + file + " doesn't exist");
 
         // Return the coordinate
         return new Coordinate(x, y);
@@ -92,9 +92,9 @@ public class Board {
      * @param fileRank A string that contains the file at the
      *                 first char and rank at the second
      * @return The requested coordinate
-     * @throws Exception If the requested coordinate doesn't exist
+     * @throws IndexOutOfBoundsException If the requested coordinate doesn't exist
      */
-    public static Coordinate getCoordinate(String fileRank) throws Exception {
+    public static Coordinate getCoordinate(String fileRank) throws IndexOutOfBoundsException {
         char file = fileRank.charAt(0);
         int rank = Integer.parseInt(String.valueOf(fileRank.charAt(1)));
         return Board.getCoordinate(file, rank);
@@ -136,9 +136,9 @@ public class Board {
      * @param file File or column where the square is located
      * @param row Row where the square is located
      * @return The requested square
-     * @throws Exception If file or row doesn't exist
+     * @throws IndexOutOfBoundsException If file or row doesn't exist
      */
-    public Square getSquare(char file, int row) throws Exception {
+    public Square getSquare(char file, int row) throws IndexOutOfBoundsException {
         Coordinate c = Board.getCoordinate(file, row);
         return this.getSquare(c);
     }
@@ -148,9 +148,9 @@ public class Board {
      * @param fileRank A string that contains the file at the
      *                 first char and rank at the second
      * @return The requested square
-     * @throws Exception If the requested square doesn't exist
+     * @throws IndexOutOfBoundsException If the requested square doesn't exist
      */
-    public Square getSquare(String fileRank) throws Exception {
+    public Square getSquare(String fileRank) throws IndexOutOfBoundsException {
         Coordinate c = Board.getCoordinate(fileRank);
         return this.getSquare(c);
     }

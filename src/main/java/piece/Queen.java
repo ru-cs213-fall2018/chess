@@ -41,9 +41,10 @@ public class Queen extends Piece {
     }
 
     @Override
-    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
-        if (!found) throw new Exception("A queen can't go there");
-        if (!Board.isPathClear(path)) throw new Exception("The queen's path is blocked");
+    protected String canMove(boolean found, int pathNum, List<Square> path) {
+        if (!found) return "A queen can't go there";
+        if (!Board.isPathClear(path)) return "The queen's path is blocked";
+        return null;
     }
 
     /**

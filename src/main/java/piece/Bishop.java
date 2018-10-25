@@ -37,9 +37,10 @@ public class Bishop extends Piece {
     }
 
     @Override
-    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
-        if (!found) throw new Exception("A bishop can't go there");
-        if (!Board.isPathClear(path)) throw new Exception("The bishop's path is blocked");
+    protected String canMove(boolean found, int pathNum, List<Square> path) {
+        if (!found) return "A bishop can't go there";
+        if (!Board.isPathClear(path)) return "The bishop's path is blocked";
+        return null;
     }
 
     /**

@@ -41,8 +41,9 @@ public class King extends Piece {
     }
 
     @Override
-    protected void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception {
-        if (!found) throw new Exception("A king can't move there");
+    protected String canMove(boolean found, int pathNum, List<Square> path) {
+        if (!found) return "A king can't move there";
+        return null;
     }
 
     /**

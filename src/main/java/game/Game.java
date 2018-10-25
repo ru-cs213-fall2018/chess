@@ -1,7 +1,6 @@
 package game;
 
 import board.Board;
-import board.Coordinate;
 import board.Square;
 import chess.Color;
 
@@ -46,18 +45,15 @@ public class Game {
 
                 String fromString = move[0];
                 String toString = move[1];
+                Square from = this.board.getSquare(fromString);
+                Square to = this.board.getSquare(toString);
 
-                try {
-                    Square from = this.board.getSquare(fromString);
-                    Square to = this.board.getSquare(toString);
-                    this.movePiece(from, to);
+                String msg = this.movePiece(from, to);
 
-                } catch (Exception e) {
-                    System.out.println("Illegal move, try again: " + e.getMessage());
-                }
+                if (msg != null) System.out.println("Illegal move, try again: " + msg);
 
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Bad input");
+                System.out.println("Bad input: " + e.getMessage());
             }
 
             System.out.println();
@@ -70,19 +66,20 @@ public class Game {
      * @param to Square where the piece should go
      * @throws Exception If the from or to is not allowed
      */
-    public void movePiece(Square from, Square to) throws Exception {
+    public String movePiece(Square from, Square to) {
 
         // Check if the you are moving your own piece
         if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
-            throw new Exception("You can only move your own piece");
+            return "You can only move your own piece";
 
         // Check if end has same color piece
         if (to.hasPiece() && to.getPiece().getColor() == this.currentPlayer.getColor())
-            throw new Exception("Your have already have a piece at your destination");
+            return "Your have already have a piece at your destination";
 
         // Move the piece
-        from.getPiece().moveTo(to);
-        this.finishTurn();
+        String ret = from.getPiece().move(to);
+        if (ret == null) this.finishTurn();
+        return ret;
     }
 
     /**

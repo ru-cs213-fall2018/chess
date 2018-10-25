@@ -37,9 +37,23 @@ public abstract class Piece {
      * Moves the piece if allowed
      * @param square The square to move the piece to.
      *               Must be empty or have opponents piece.
-     * @throws Exception If you cannot move the piece to square
+     * @return Null if piece moved, message otherwise
      */
-    public void moveTo(Square square) throws Exception {
+    public String move(Square square) {
+        String ret = this.canMove(square);
+        if (ret == null) {
+            this.square.removePiece();
+            square.setPiece(this);
+        }
+        return ret;
+    }
+
+    /**
+     * Checks if this piece can move to square
+     * @param square The destination
+     * @return Null if this piece can move to square, otherwise a message
+     */
+    public String canMove(Square square) {
 
         // Initialize path and found
         ArrayList<Square> path = new ArrayList<>();
@@ -73,11 +87,7 @@ public abstract class Piece {
         }
 
         // Check if can move
-        this.checkCanMove(found, pathNum, path);
-
-        // Move the piece
-        this.square.removePiece();
-        square.setPiece(this);
+        return this.canMove(found, pathNum, path);
     }
 
     /**
@@ -106,9 +116,9 @@ public abstract class Piece {
      * @param found If the destination was found
      * @param pathNum Number of the path the destination was found in (1 to numPaths)
      * @param path The path where the destination was found
-     * @throws Exception If piece cannot move
+     * @return Null if can move, otherwise a message
      */
-    protected abstract void checkCanMove(boolean found, int pathNum, List<Square> path) throws Exception;
+    protected abstract String canMove(boolean found, int pathNum, List<Square> path);
 
     /**
      * @param n Number of spaces forward
