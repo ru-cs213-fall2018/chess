@@ -64,7 +64,7 @@ public class Game {
      * Moves the piece on from to to
      * @param from Square where the piece is
      * @param to Square where the piece should go
-     * @throws Exception If the from or to is not allowed
+     * @return Null if piece was moved, else returns message
      */
     public String movePiece(Square from, Square to) {
 
