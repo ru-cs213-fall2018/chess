@@ -4,6 +4,7 @@ import chess.Color;
 import piece.*;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Represents a chess board
@@ -165,12 +166,26 @@ public class Board {
      * @return True if square is safe, false otherwise
      */
     public boolean isSafe(Square square, Color color) {
+        return this.isEverySquare(s -> {
+            Piece p = s.getPiece();
+            boolean notSafe = s.hasPiece() &&
+                    p.getColor() != color &&
+                    p.canAttack(square);
+            return !notSafe;
+        });
+    }
+
+    /**
+     * Checks if predicate returns true for every square in the board
+     * @param predicate Predicate that will be passed every square in the board
+     * @return True if all squares pass test, false otherwise
+     */
+    public boolean isEverySquare(Predicate<Square> predicate) {
         boolean ret = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Square s = this.grid[i][j];
-                Piece p = s.getPiece();
-                if (s.hasPiece() && p.getColor() != color && p.canAttack(square))
+                if (!predicate.test(s))
                     ret = false;
             }
         }
