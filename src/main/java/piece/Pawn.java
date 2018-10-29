@@ -5,6 +5,7 @@ import board.Coordinate;
 import board.Square;
 import chess.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +56,19 @@ public class Pawn extends Piece {
         else if (pathNum != 1 && !path.get(path.size() - 1).hasPiece())
             return "A pawn can only attack in that direction";
         return null;
+    }
+
+    /**
+     * @param square Square to check if this piece can attack
+     * @return True if pawn can attack square, else false
+     */
+    @Override
+    public boolean canAttack(Square square) {
+        ArrayList<Coordinate> attackSpots = new ArrayList<>();
+        attackSpots.add(new Coordinate(this.xLeft(1), this.yForward(1)));
+        attackSpots.add(new Coordinate(this.xRight(1), this.yForward(1)));
+        boolean isAttack = attackSpots.contains(square.getCoordinate());
+        return super.canAttack(square) && isAttack;
     }
 
     /**
