@@ -99,6 +99,16 @@ public abstract class Piece {
     }
 
     /**
+     * Checks if any of the opposing pieces can attack this
+     * piece if it went on square
+     * @param square The square whos safeness is being checked
+     * @return True if square is safe, otherwise false
+     */
+    public boolean isSafe(Square square) {
+        return this.board.isSafe(square, this.color);
+    }
+
+    /**
      * Implement this to get the next coordinate when building the path to the
      * destination square
      * @param pathNum The number of the current path (1 to numPaths)
