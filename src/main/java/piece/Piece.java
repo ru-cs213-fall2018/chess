@@ -91,6 +91,14 @@ public abstract class Piece {
     }
 
     /**
+     * @param square Square to check if this piece can attack
+     * @return True if this piece can move to square, otherwise false
+     */
+    public boolean canAttack(Square square) {
+        return this.canMove(square) == null;
+    }
+
+    /**
      * Implement this to get the next coordinate when building the path to the
      * destination square
      * @param pathNum The number of the current path (1 to numPaths)
