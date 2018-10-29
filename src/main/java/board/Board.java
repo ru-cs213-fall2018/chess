@@ -170,7 +170,7 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 Square s = this.grid[i][j];
                 Piece p = s.getPiece();
-                if (s.hasPiece() && p.getColor() != color && p.canMove(square) == null)
+                if (s.hasPiece() && p.getColor() != color && p.canAttack(square))
                     ret = false;
             }
         }
