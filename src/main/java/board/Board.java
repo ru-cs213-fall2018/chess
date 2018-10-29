@@ -158,7 +158,7 @@ public class Board {
     /**
      * Check if square is safe from the opposing color
      * @param square The square to check for safety
-     * @param color The color of the probably hypothetical piece
+     * @param color The color of the hypothetical piece
      *              that would be on square. Basically checks if
      *              any of the pieces of the opposite color can
      *              attack this square.
