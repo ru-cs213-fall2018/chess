@@ -47,6 +47,37 @@ public class King extends Piece {
     }
 
     /**
+     * Checks if the king is in danger
+     * @return True if the king can be attacked, false otherwise
+     */
+    public boolean isInCheck() {
+        return this.isInCheck(this.square);
+    }
+
+    /**
+     * Checks if this king is in check at square
+     * @param square The hypothetical square the king
+     *               will check its check status from
+     * @return True if king can be attacked at square, else false
+     */
+    public boolean isInCheck(Square square) {
+        return !this.isSafe(square);
+    }
+
+    /**
+     * Checks if king is in checkmate
+     * @return True if the kink can't move anywhere safe
+     * and is currently under attack
+     */
+    public boolean isInCheckMate() {
+        return this.board.isEverySquare(s -> {
+            if (this.canMove(s) == null)
+                return this.isInCheck(s);
+            else return true;
+        });
+    }
+
+    /**
      * @return ASCII representation of the kning
      */
     @Override
