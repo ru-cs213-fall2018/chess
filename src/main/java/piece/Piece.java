@@ -55,6 +55,10 @@ public abstract class Piece {
      */
     public String canMove(Square square) {
 
+        // Check if piece already on square
+        if (square.equals(this.square))
+            return "A piece cannot move to where it is at";
+
         // Initialize path and found
         ArrayList<Square> path = new ArrayList<>();
         boolean found = false;
