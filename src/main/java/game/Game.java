@@ -18,7 +18,7 @@ public class Game {
     private Board board;
     private Player currentPlayer;
     private Player otherPlayer;
-    private boolean drawRequested;
+    private boolean drawOffered;
 
     /**
      * Create a new game
@@ -27,7 +27,7 @@ public class Game {
         this.board = new Board();
         this.currentPlayer = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
         this.otherPlayer = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
-        this.drawRequested = false;
+        this.drawOffered = false;
     }
 
     /**
@@ -47,19 +47,26 @@ public class Game {
                 // Handle accepting draw offer
                 if (move.length == 1) {
                     if (move[0].trim().equals("draw")) {
-                        if (!this.drawRequested)
+
+                        // Check if draw has been offered
+                        if (!this.drawOffered)
                             throw new IllegalMoveException(this.otherPlayer + " did not offer a draw");
+
+                        // End the game
                         System.out.println("\ndraw");
                         break;
-                    } else throw new IllegalMoveException("Not a valid option: " + move[0]);
+                    }
+
+                    // Handle erroneous input
+                    else throw new IllegalMoveException("Not a valid option: " + move[0]);
                 }
 
                 // Handle a regular move and draw offers
                 else if (move.length == 2 || move.length == 3) {
 
                     // Check if valid draw offer
-                    boolean drawRequested = move.length == 3 && move[2].trim().equals("draw?");
-                    if (move.length == 3 && !drawRequested)
+                    boolean drawOffered = move.length == 3 && move[2].trim().equals("draw?");
+                    if (move.length == 3 && !drawOffered)
                         throw new IllegalMoveException("Not a valid option: " + move[2]);
 
                     // Move the piece
@@ -87,7 +94,7 @@ public class Game {
                     this.swapPlayers();
 
                     // Set draw requested
-                    this.drawRequested = drawRequested;
+                    this.drawOffered = drawOffered;
                 }
 
                 // Handle erroneous number of move arguments
