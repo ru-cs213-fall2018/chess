@@ -73,10 +73,11 @@ public class King extends Piece {
      * hypothetical move, else false
      */
     public boolean isInCheck(Piece piece, Square square) {
-        piece.move(square);
-        boolean ret = this.isInCheck();
-        piece.goBack();
-        return ret;
+        if (piece.move(square) == null) {
+            boolean ret = this.isInCheck();
+            piece.goBack();
+            return ret;
+        } else return this.isInCheck();
     }
 
     /**
