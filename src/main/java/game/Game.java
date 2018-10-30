@@ -43,17 +43,19 @@ public class Game {
             String in = input.nextLine();
             String[] move = in.split(" ");
             try {
-
-                // Handle accepting draw offer
                 if (move.length == 1) {
-                    if (move[0].trim().equals("draw")) {
 
-                        // Check if draw has been offered
+                    // Handle accepting draw offer
+                    if (move[0].trim().equals("draw")) {
                         if (!this.drawOffered)
                             throw new IllegalMoveException(this.otherPlayer + " did not offer a draw");
-
-                        // End the game
                         System.out.println("\ndraw");
+                        break;
+                    }
+
+                    // Handle resigning
+                    else if (move[0].trim().equals("resign")) {
+                        System.out.println("\n" + this.otherPlayer + " wins");
                         break;
                     }
 
