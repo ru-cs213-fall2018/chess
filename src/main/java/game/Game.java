@@ -18,6 +18,7 @@ public class Game {
     private Board board;
     private Player currentPlayer;
     private Player otherPlayer;
+    private boolean drawRequested;
 
     /**
      * Create a new game
@@ -26,6 +27,7 @@ public class Game {
         this.board = new Board();
         this.currentPlayer = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
         this.otherPlayer = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
+        this.drawRequested = false;
     }
 
     /**
@@ -46,7 +48,18 @@ public class Game {
 
                 if (move.length == 1) {
 
-                } else if (move.length == 2) {
+                    if (move[0].trim().equals("draw")) {
+                        if (!this.drawRequested)
+                            throw new IllegalMoveException(this.otherPlayer + " did not offer a draw");
+                        System.out.println("\ndraw");
+                        break;
+                    } else throw new IllegalMoveException("Not a valid option: " + move[0]);
+
+                } else if (move.length == 2 || move.length == 3) {
+
+                    boolean drawRequested = move.length == 3 && move[2].trim().equals("draw?");
+                    if (move.length == 3 && !drawRequested)
+                        throw new IllegalMoveException("Not a valid option: " + move[2]);
 
                     Square from = this.board.getSquare(move[0]);
                     Square to = this.board.getSquare(move[1]);
@@ -67,12 +80,9 @@ public class Game {
                     if (this.currentPlayer.getKing().isInCheck())
                         System.out.println(("\n" + this.currentPlayer + " is in check"));
 
+                    else this.drawRequested = drawRequested;
 
-                } else if (move.length == 3){
-
-                } else {
-
-                }
+                } else throw new BadInputException("A move only accepts 1, 2, or 3 arguments");
 
             } catch (BadInputException e) {
                 System.out.println("\nBad input: " + e.getMessage());
