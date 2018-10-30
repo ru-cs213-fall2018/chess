@@ -63,7 +63,7 @@ public class Game {
                     else throw new IllegalMoveException("Not a valid option: " + move[0]);
                 }
 
-                // Handle a regular move and draw offers
+                // Handle regular moves and draw offers
                 else if (move.length == 2 || move.length == 3) {
 
                     // Check if valid draw offer
@@ -74,7 +74,10 @@ public class Game {
                     // Move the piece
                     Square from = this.board.getSquare(move[0]);
                     Square to = this.board.getSquare(move[1]);
-                    this.movePiece(from, to);
+                    if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
+                        throw new IllegalMoveException("You can only move your own piece");
+                    String error = from.getPiece().move(to);
+                    if (error != null) throw new IllegalMoveException(error);
 
                     // Check if current player is in check
                     if (this.currentPlayer.getKing().isInCheck()) {
@@ -93,9 +96,11 @@ public class Game {
                         System.out.println(("\n" + this.otherPlayer + " is in check"));
 
                     // Swap the playes
-                    this.swapPlayers();
+                    Player temp = this.currentPlayer;
+                    this.currentPlayer = this.otherPlayer;
+                    this.otherPlayer = temp;
 
-                    // Set draw requested
+                    // Set draw offered
                     this.drawOffered = drawOffered;
                 }
 
@@ -111,31 +116,5 @@ public class Game {
             }
             System.out.println();
         }
-    }
-
-    /**
-     * Moves the piece on from to to
-     * @param from Square where the piece is
-     * @param to Square where the piece should go
-     * @throws IllegalMoveException If cannot make the move
-     */
-    private void movePiece(Square from, Square to) throws IllegalMoveException {
-
-        // Check if the you are moving your own piece
-        if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
-            throw new IllegalMoveException("You can only move your own piece");
-
-        // Move the piece
-        String error = from.getPiece().move(to);
-        if (error != null) throw new IllegalMoveException(error);
-    }
-
-    /**
-     * Switch the current player
-     */
-    private void swapPlayers() {
-        Player temp = this.currentPlayer;
-        this.currentPlayer = this.otherPlayer;
-        this.otherPlayer = temp;
     }
 }
