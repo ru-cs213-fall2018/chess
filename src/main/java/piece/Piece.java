@@ -72,9 +72,13 @@ public abstract class Piece {
      */
     public String canMove(Square square) {
 
+        // Check if piece is moving
+        if (square.equals(this.square))
+            return "A piece cannot stay put";
+
         // Check if piece already on square
         if (square.hasPiece() && square.getPiece().getColor() == this.getColor())
-            return "A piece cannot attack its own army";
+            return "A piece cannot attack its own";
 
         // Initialize path and found
         ArrayList<Square> path = new ArrayList<>();

@@ -71,10 +71,6 @@ public class Game {
         if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
             return "You can only move your own piece";
 
-        // Check if end has same color piece
-        if (to.hasPiece() && to.getPiece().getColor() == this.currentPlayer.getColor())
-            return "Your have already have a piece at your destination";
-
         // Move the piece
         String ret = from.getPiece().move(to);
         if (ret == null) this.swapPlayers();
