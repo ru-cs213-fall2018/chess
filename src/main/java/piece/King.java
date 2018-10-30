@@ -65,15 +65,34 @@ public class King extends Piece {
     }
 
     /**
+     * Checks if this king is in check if the piece goes to
+     * a square
+     * @param piece The piece if moved hypothetically
+     * @param square The hypothetical destination of the piece
+     * @return True if king is still in check after the
+     * hypothetical move, else false
+     */
+    public boolean isInCheck(Piece piece, Square square) {
+        piece.move(square);
+        boolean ret = this.isInCheck();
+        piece.goBack();
+        return ret;
+    }
+
+    /**
      * Checks if king is in checkmate
      * @return True if the kink can't move anywhere safe
      * and is currently under attack
      */
     public boolean isInCheckMate() {
-        return this.board.isEverySquare(s -> {
-            if (this.canMove(s) == null)
-                return this.isInCheck(s);
-            else return true;
+        return this.board.isEverySquare(s1 -> {
+            if (s1.hasPiece() && s1.getPiece().getColor() == this.color) {
+                return this.board.isEverySquare(s2 -> {
+                    if (s1.getPiece().move(s2) == null)
+                        return this.isInCheck(s1.getPiece(), s2);
+                    else return this.isInCheck();
+                });
+            } else return this.isInCheck();
         });
     }
 
