@@ -2,7 +2,9 @@ package game;
 
 import board.Board;
 import board.Square;
+import chess.BadInputException;
 import chess.Color;
+import chess.IllegalMoveException;
 import piece.King;
 
 import java.util.Scanner;
@@ -20,7 +22,7 @@ public class Game {
     /**
      * Create a new game
      */
-    public Game() {
+    public Game() throws BadInputException {
         this.board = new Board();
         this.currentPlayer = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
         this.otherPlayer = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
@@ -42,37 +44,40 @@ public class Game {
 
             try {
 
-                String fromString = move[0];
-                String toString = move[1];
-                Square from = this.board.getSquare(fromString);
-                Square to = this.board.getSquare(toString);
+                if (move.length == 1) {
 
-                String error = this.movePiece(from, to);
+                } else if (move.length == 2) {
 
-                if (error == null) {
+                    Square from = this.board.getSquare(move[0]);
+                    Square to = this.board.getSquare(move[1]);
+                    this.movePiece(from, to);
 
                     if (this.currentPlayer.getKing().isInCheck()) {
                         to.getPiece().goBack();
-                        error = "You cannot be in check";
+                        throw new IllegalMoveException("You cannot be in check");
                     }
 
-                    else {
-                        this.swapPlayers();
-                        if (this.currentPlayer.getKing().isInCheckMate()) {
-                            System.out.println();
-                            System.out.println(this.board);
-                            System.out.println("\n" + this.otherPlayer + " wins");
-                            break;
-                        } else if (this.currentPlayer.getKing().isInCheck())
-                            System.out.println(("\n" + this.currentPlayer + " is in check"));
+                    this.swapPlayers();
+
+                    if (this.currentPlayer.getKing().isInCheckMate()) {
+                        System.out.println("\n" + this.board + "\n\n" + this.otherPlayer + " wins");
+                        break;
                     }
+
+                    if (this.currentPlayer.getKing().isInCheck())
+                        System.out.println(("\n" + this.currentPlayer + " is in check"));
+
+
+                } else if (move.length == 3){
+
+                } else {
 
                 }
 
-                if (error != null) System.out.println("\nIllegal move, try again: " + error);
-
-            } catch (IndexOutOfBoundsException e) {
+            } catch (BadInputException e) {
                 System.out.println("\nBad input: " + e.getMessage());
+            } catch (IllegalMoveException e) {
+                System.out.println("\nIllegal move, try again: " + e.getMessage());
             }
 
             System.out.println();
@@ -83,16 +88,17 @@ public class Game {
      * Moves the piece on from to to
      * @param from Square where the piece is
      * @param to Square where the piece should go
-     * @return Null if piece was moved, else returns message
+     * @throws IllegalMoveException If cannot make the move
      */
-    private String movePiece(Square from, Square to) {
+    private void movePiece(Square from, Square to) throws IllegalMoveException {
 
         // Check if the you are moving your own piece
         if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
-            return "You can only move your own piece";
+            throw new IllegalMoveException("You can only move your own piece");
 
         // Move the piece
-        return from.getPiece().move(to);
+        String error = from.getPiece().move(to);
+        if (error != null) throw new IllegalMoveException(error);
     }
 
     /**
