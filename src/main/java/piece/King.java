@@ -85,14 +85,11 @@ public class King extends Piece {
      * and is currently under attack
      */
     public boolean isInCheckMate() {
+        if (!this.isInCheck()) return false;
         return this.board.isEverySquare(s1 -> {
-            if (s1.hasPiece() && s1.getPiece().getColor() == this.color) {
-                return this.board.isEverySquare(s2 -> {
-                    if (s1.getPiece().move(s2) == null)
-                        return this.isInCheck(s1.getPiece(), s2);
-                    else return this.isInCheck();
-                });
-            } else return this.isInCheck();
+            if (s1.hasPiece() && s1.getPiece().getColor() == this.color)
+                return this.board.isEverySquare(s2 -> this.isInCheck(s1.getPiece(), s2));
+            else return true;
         });
     }
 
