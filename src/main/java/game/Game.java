@@ -47,12 +47,30 @@ public class Game {
                 Square from = this.board.getSquare(fromString);
                 Square to = this.board.getSquare(toString);
 
-                String msg = this.movePiece(from, to);
+                String error = this.movePiece(from, to);
 
-                if (msg != null) System.out.println("Illegal move, try again: " + msg);
+                if (error == null) {
+
+                    if (this.currentPlayer.getKing().isInCheck()) {
+                        to.getPiece().goBack();
+                        error = "You cannot be in check";
+                    }
+
+                    else {
+                        this.swapPlayers();
+                        if (this.currentPlayer.getKing().isInCheckMate()) {
+                            System.out.println("\n" + this.otherPlayer + " wins!");
+                            break;
+                        } else if (this.currentPlayer.getKing().isInCheck())
+                            System.out.println(("\n" + this.currentPlayer + " is in check!"));
+                    }
+
+                }
+
+                if (error != null) System.out.println("\nIllegal move, try again: " + error);
 
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Bad input: " + e.getMessage());
+                System.out.println("\nBad input: " + e.getMessage());
             }
 
             System.out.println();
@@ -72,9 +90,7 @@ public class Game {
             return "You can only move your own piece";
 
         // Move the piece
-        String ret = from.getPiece().move(to);
-        if (ret == null) this.swapPlayers();
-        return ret;
+        return from.getPiece().move(to);
     }
 
     /**
