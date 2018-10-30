@@ -3,6 +3,7 @@ package game;
 import board.Board;
 import board.Square;
 import chess.Color;
+import piece.King;
 
 import java.util.Scanner;
 
@@ -21,10 +22,10 @@ public class Game {
      * Create a new game
      */
     public Game() {
-        this.player1 = new Player(Color.White);
-        this.player2 = new Player(Color.Black);
-        this.currentPlayer = this.player1;
         this.board = new Board();
+        this.player1 = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
+        this.player2 = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
+        this.currentPlayer = this.player1;
     }
 
     /**

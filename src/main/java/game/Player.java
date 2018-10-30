@@ -1,6 +1,7 @@
 package game;
 
 import chess.Color;
+import piece.King;
 
 /**
  * Represents a player
@@ -9,13 +10,16 @@ import chess.Color;
 public class Player {
 
     private Color color;
+    private King king;
 
     /**
      * Creates a new player
      * @param color Color of the player
+     * @param king The king of this player
      */
-    public Player(Color color) {
+    public Player(Color color, King king) {
         this.color = color;
+        this.king = king;
     }
 
     /**
@@ -23,6 +27,13 @@ public class Player {
      */
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * @return King of this player
+     */
+    public King getKing() {
+        return king;
     }
 
     @Override
