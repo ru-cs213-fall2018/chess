@@ -56,12 +56,10 @@ public class Square {
     }
 
     /**
-     * Set a piece on this square and update the piece's
-     * square to this square
+     * Set a piece on this square
      * @param piece The piece to add or null if no piece
      */
     public void setPiece(Piece piece) {
-        piece.setSquare(this);
         this.piece = piece;
     }
 

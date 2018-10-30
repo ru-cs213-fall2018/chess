@@ -44,6 +44,7 @@ public abstract class Piece {
         if (ret == null) {
             this.square.removePiece();
             square.setPiece(this);
+            this.square = square;
         }
         return ret;
     }
@@ -180,14 +181,6 @@ public abstract class Piece {
         Coordinate start = this.square.getCoordinate();
         boolean white = this.color == Color.White;
         return start.getX() + (white ? -n : n);
-    }
-
-    /**
-     * Update the square that this piece is on
-     * @param square The square that this piece is on
-     */
-    public void setSquare(Square square) {
-        this.square = square;
     }
 
     /**
