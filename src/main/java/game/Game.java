@@ -65,7 +65,7 @@ public class Game {
      * @param to Square where the piece should go
      * @return Null if piece was moved, else returns message
      */
-    public String movePiece(Square from, Square to) {
+    private String movePiece(Square from, Square to) {
 
         // Check if the you are moving your own piece
         if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
