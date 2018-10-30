@@ -181,15 +181,13 @@ public class Board {
      * @return True if all squares pass test, false otherwise
      */
     public boolean isEverySquare(Predicate<Square> predicate) {
-        boolean ret = true;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Square s = this.grid[i][j];
-                if (!predicate.test(s))
-                    ret = false;
+                if (!predicate.test(s)) return false;
             }
         }
-        return ret;
+        return true;
     }
 
     /**
