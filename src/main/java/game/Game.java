@@ -59,7 +59,7 @@ public class Game {
                     else {
                         this.swapPlayers();
                         if (this.currentPlayer.getKing().isInCheckMate()) {
-                            System.out.println("\n" + this.otherPlayer + " wins!");
+                            System.out.println("\n" + this.currentPlayer + " is in checkmate, " + this.otherPlayer + " wins!");
                             break;
                         } else if (this.currentPlayer.getKing().isInCheck())
                             System.out.println(("\n" + this.currentPlayer + " is in check!"));
