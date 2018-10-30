@@ -18,6 +18,8 @@ public abstract class Piece {
     protected Square square;
     protected Color color;
     protected int numPaths;
+    private Square previousSquare;
+    private Piece nextSquaresPreviousPiece;
 
     /**
      * Initializes a piece
@@ -42,11 +44,25 @@ public abstract class Piece {
     public String move(Square square) {
         String ret = this.canMove(square);
         if (ret == null) {
+            this.previousSquare = this.square;
+            this.nextSquaresPreviousPiece = square.getPiece();
             this.square.removePiece();
             square.setPiece(this);
             this.square = square;
         }
         return ret;
+    }
+
+    /**
+     * Restores previous state of the board after this
+     * piece moved
+     */
+    public void goBack() {
+        this.square.setPiece(this.nextSquaresPreviousPiece);
+        this.square = this.previousSquare;
+        this.square.setPiece(this);
+        this.nextSquaresPreviousPiece = null;
+        this.previousSquare = null;
     }
 
     /**
