@@ -34,62 +34,72 @@ public class Game {
      * Start playing the game
      */
     public void start() {
-
         Scanner input = new Scanner(System.in);
-
         while (true) {
 
+            // Get input
             System.out.println(this.board);
             System.out.print("\n" + currentPlayer + "'s move: ");
             String in = input.nextLine();
             String[] move = in.split(" ");
-
             try {
 
+                // Handle accepting draw offer
                 if (move.length == 1) {
-
                     if (move[0].trim().equals("draw")) {
                         if (!this.drawRequested)
                             throw new IllegalMoveException(this.otherPlayer + " did not offer a draw");
                         System.out.println("\ndraw");
                         break;
                     } else throw new IllegalMoveException("Not a valid option: " + move[0]);
+                }
 
-                } else if (move.length == 2 || move.length == 3) {
+                // Handle a regular move and draw offers
+                else if (move.length == 2 || move.length == 3) {
 
+                    // Check if valid draw offer
                     boolean drawRequested = move.length == 3 && move[2].trim().equals("draw?");
                     if (move.length == 3 && !drawRequested)
                         throw new IllegalMoveException("Not a valid option: " + move[2]);
 
+                    // Move the piece
                     Square from = this.board.getSquare(move[0]);
                     Square to = this.board.getSquare(move[1]);
                     this.movePiece(from, to);
 
+                    // Check if current player is in check
                     if (this.currentPlayer.getKing().isInCheck()) {
                         to.getPiece().goBack();
                         throw new IllegalMoveException("You cannot be in check");
                     }
 
-                    this.swapPlayers();
-
-                    if (this.currentPlayer.getKing().isInCheckMate()) {
-                        System.out.println("\n" + this.board + "\n\n" + this.otherPlayer + " wins");
+                    // Current player wins if other player is in checkmate
+                    if (this.otherPlayer.getKing().isInCheckMate()) {
+                        System.out.println("\n" + this.board + "\n\n" + this.currentPlayer + " wins");
                         break;
                     }
 
-                    if (this.currentPlayer.getKing().isInCheck())
-                        System.out.println(("\n" + this.currentPlayer + " is in check"));
+                    // Let other player know if s/he is in check
+                    if (this.otherPlayer.getKing().isInCheck())
+                        System.out.println(("\n" + this.otherPlayer + " is in check"));
 
-                    else this.drawRequested = drawRequested;
+                    // Swap the playes
+                    this.swapPlayers();
 
-                } else throw new BadInputException("A move only accepts 1, 2, or 3 arguments");
+                    // Set draw requested
+                    this.drawRequested = drawRequested;
+                }
 
-            } catch (BadInputException e) {
+                // Handle erroneous number of move arguments
+                else throw new BadInputException("A move only accepts 1, 2, or 3 arguments");
+            }
+
+            // Handle Exceptions
+            catch (BadInputException e) {
                 System.out.println("\nBad input: " + e.getMessage());
             } catch (IllegalMoveException e) {
                 System.out.println("\nIllegal move, try again: " + e.getMessage());
             }
-
             System.out.println();
         }
     }
