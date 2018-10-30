@@ -13,19 +13,17 @@ import java.util.Scanner;
  */
 public class Game {
 
-    private Player player1;
-    private Player player2;
-    private Player currentPlayer;
     private Board board;
+    private Player currentPlayer;
+    private Player otherPlayer;
 
     /**
      * Create a new game
      */
     public Game() {
         this.board = new Board();
-        this.player1 = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
-        this.player2 = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
-        this.currentPlayer = this.player1;
+        this.currentPlayer = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
+        this.otherPlayer = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
     }
 
     /**
@@ -79,17 +77,16 @@ public class Game {
 
         // Move the piece
         String ret = from.getPiece().move(to);
-        if (ret == null) this.finishTurn();
+        if (ret == null) this.swapPlayers();
         return ret;
     }
 
     /**
      * Switch the current player
      */
-    private void finishTurn() {
-        if (this.currentPlayer == this.player1)
-            this.currentPlayer = this.player2;
-        else
-            this.currentPlayer = this.player1;
+    private void swapPlayers() {
+        Player temp = this.currentPlayer;
+        this.currentPlayer = this.otherPlayer;
+        this.otherPlayer = temp;
     }
 }
