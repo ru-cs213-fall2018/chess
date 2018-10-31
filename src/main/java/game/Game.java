@@ -5,8 +5,9 @@ import board.Square;
 import chess.BadInputException;
 import chess.Color;
 import chess.IllegalMoveException;
-import piece.King;
+import piece.*;
 
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -19,6 +20,7 @@ public class Game {
     private Player currentPlayer;
     private Player otherPlayer;
     private boolean drawOffered;
+    HashMap<String, PieceConstructor> promotions;
 
     /**
      * Create a new game
@@ -28,6 +30,11 @@ public class Game {
         this.currentPlayer = new Player(Color.White, (King) this.board.getSquare('e', 1).getPiece());
         this.otherPlayer = new Player(Color.Black, (King) this.board.getSquare('e', 8).getPiece());
         this.drawOffered = false;
+        this.promotions = new HashMap<>();
+        promotions.put("R", Rook::new);
+        promotions.put("N", Knight::new);
+        promotions.put("B", Bishop::new);
+        promotions.put("Q", Queen::new);
     }
 
     /**
@@ -64,18 +71,30 @@ public class Game {
                 }
 
                 // Handle regular moves and draw offers
-                else if (move.length == 2 || move.length == 3) {
+                else if (move.length >= 2 || move.length <= 4) {
 
-                    // Check if valid draw offer
-                    boolean drawOffered = move.length == 3 && move[2].trim().equals("draw?");
-                    if (move.length == 3 && !drawOffered)
-                        throw new IllegalMoveException("Not a valid option: " + move[2]);
-
-                    // Move the piece
+                    // Defining variables
                     Square from = this.board.getSquare(move[0]);
                     Square to = this.board.getSquare(move[1]);
+                    boolean drawOffered = move.length > 2 && move[move.length - 1].trim().equals("draw?");
+                    boolean promotionRequested = move.length > 2 && promotions.containsKey(move[2].trim());
+                    boolean isFromPawn = from.getPiece() instanceof Pawn;
+                    boolean isWhite = this.currentPlayer.getColor() == Color.White;
+                    int toY = to.getCoordinate().getY();
+                    boolean isToEnd = isWhite ? toY == 7 : toY == 0;
+                    boolean isFromPawnToEnd = isFromPawn && isToEnd;
+
+                    // Check if moving own piece
                     if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
                         throw new IllegalMoveException("You can only move your own piece");
+
+                    // If 3rd argument, check if valid
+                    if (move.length > 2 && !drawOffered && !promotionRequested)
+                        throw new IllegalMoveException("Not a valid option: " + move[2]);
+                    if (promotionRequested && !isFromPawnToEnd)
+                        throw new IllegalMoveException("You cannot request for promotion in this move");
+
+                    // Move the piece
                     String error = from.getPiece().move(to);
                     if (error != null) throw new IllegalMoveException(error);
 
@@ -83,6 +102,12 @@ public class Game {
                     if (this.currentPlayer.getKing().isInCheck()) {
                         to.getPiece().goBack();
                         throw new IllegalMoveException("You cannot be in check");
+                    }
+
+                    // Promote pawns at end
+                    else if (isFromPawnToEnd) {
+                        String key = promotionRequested ? move[2] : "Q";
+                        to.setPiece(this.promotions.get(key).construct(this.board, to, currentPlayer.getColor()));
                     }
 
                     // Current player wins if other player is in checkmate
