@@ -51,7 +51,7 @@ public class King extends Piece {
      * @return True if the king can be attacked, false otherwise
      */
     public boolean isInCheck() {
-        return this.isInCheck(this.square);
+        return this.isInCheck(this.getSquare());
     }
 
     /**
@@ -87,9 +87,9 @@ public class King extends Piece {
      */
     public boolean isInCheckMate() {
         if (!this.isInCheck()) return false;
-        return this.board.isEverySquare(s1 -> {
-            if (s1.hasPiece() && s1.getPiece().getColor() == this.color)
-                return this.board.isEverySquare(s2 -> this.isInCheck(s1.getPiece(), s2));
+        return this.getBoard().isEverySquare(s1 -> {
+            if (s1.hasPiece() && s1.getPiece().getColor() == this.getColor())
+                return this.getBoard().isEverySquare(s2 -> this.isInCheck(s1.getPiece(), s2));
             else return true;
         });
     }

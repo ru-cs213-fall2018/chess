@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class Pawn extends Piece {
 
-    private boolean moved;
-
     /**
      * Creates a new pawn
      * @param board Board the pawn is on
@@ -24,14 +22,6 @@ public class Pawn extends Piece {
      */
     public Pawn(Board board, Square square, Color color) {
         super(board, square, color, 3);
-        this.moved = false;
-    }
-
-    @Override
-    public String move(Square square) {
-        String ret = super.move(square);
-        if (ret == null) this.moved = true;
-        return ret;
     }
 
     @Override
@@ -43,7 +33,7 @@ public class Pawn extends Piece {
 
     @Override
     protected boolean stepCondition(int pathNum, int stepNum, Coordinate c) {
-        if (pathNum == 1 && !this.moved) return stepNum <= 3;
+        if (pathNum == 1 && !this.hasMoved()) return stepNum <= 3;
         else return stepNum <= 2;
     }
 

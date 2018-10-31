@@ -14,12 +14,14 @@ import java.util.List;
  */
 public abstract class Piece {
 
-    protected Board board;
-    protected Square square;
-    protected Color color;
-    protected int numPaths;
+    private Board board;
+    private Square square;
+    private Color color;
+    private int numPaths;
+    private boolean moved;
     private Square previousSquare;
     private Piece nextSquaresPreviousPiece;
+    private boolean previousMoved;
 
     /**
      * Initializes a piece
@@ -33,6 +35,8 @@ public abstract class Piece {
         this.square = square;
         this.color = color;
         this.numPaths = numPaths;
+        this.moved = false;
+        this.previousMoved = false;
     }
 
     /**
@@ -46,9 +50,11 @@ public abstract class Piece {
         if (ret == null) {
             this.previousSquare = this.square;
             this.nextSquaresPreviousPiece = square.getPiece();
+            this.previousMoved = this.moved;
             this.square.removePiece();
             square.setPiece(this);
             this.square = square;
+            this.moved = true;
         }
         return ret;
     }
@@ -58,10 +64,12 @@ public abstract class Piece {
      * piece moved
      */
     public void goBack() {
+        if (this.previousSquare == null)
+            throw new UnsupportedOperationException("Cannot go back");
         this.square.setPiece(this.nextSquaresPreviousPiece);
         this.square = this.previousSquare;
         this.square.setPiece(this);
-        this.nextSquaresPreviousPiece = null;
+        this.moved = this.previousMoved;
         this.previousSquare = null;
     }
 
@@ -208,6 +216,28 @@ public abstract class Piece {
      */
     public Color getColor() {
         return color;
+    }
+
+    /**
+     * @return The board this piece is on
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     * @return The square this piece is on
+     */
+    public Square getSquare() {
+        return square;
+    }
+
+    /**
+     * @return True if this piece has been moved from its original
+     * spot, otherwise false
+     */
+    public boolean hasMoved() {
+        return moved;
     }
 
     /**
