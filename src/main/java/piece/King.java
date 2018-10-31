@@ -23,6 +23,41 @@ public class King extends Piece {
         super(board, square, color, 8);
     }
 
+    /**
+     * Checks if the king can castle to square
+     * @param square The destination
+     * @return The rook the king will castle with
+     * and if the king can't castle, return null
+     */
+    private Rook canCastle(Square square) {
+
+        // Check if king has moved already
+        if (this.hasMoved()) return null;
+        boolean destinationValid = false;
+        Rook validRook = null;
+        for (int i = 0; i < 2; i++) {
+            Coordinate c = this.getSquare().getCoordinate();
+            for (int j = 1; Board.isInBoard(c); j++) {
+
+                // Check if destination is valid
+                Square s = this.getBoard().getSquare(c);
+                if (j == 3 && square.equals(s)) destinationValid = true;
+                else break;
+
+                // Check if rook is there and valid
+                Piece p = s.getPiece();
+                if (p instanceof Rook && !p.hasMoved()) {
+                    validRook = (Rook) p;
+                    break;
+                }
+                c = new Coordinate(i == 0 ? this.xRight(j) : this.xLeft(j), c.getY());
+            }
+        }
+
+        // Return if valid
+        return destinationValid ? validRook : null;
+    }
+
     @Override
     protected Coordinate nextCoordinate(int pathNum, int stepNum, Coordinate c) {
         if (pathNum == 1) return new Coordinate(c.getX(), this.yForward(stepNum));
