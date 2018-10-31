@@ -20,7 +20,7 @@ public abstract class Piece {
     private int numPaths;
     private boolean moved;
     private Square previousSquare;
-    private Piece nextSquaresPreviousPiece;
+    private Piece previousPiece;
     private boolean previousMoved;
 
     /**
@@ -49,7 +49,7 @@ public abstract class Piece {
         String ret = this.canMove(square);
         if (ret == null) {
             this.previousSquare = this.square;
-            this.nextSquaresPreviousPiece = square.getPiece();
+            this.previousPiece = square.getPiece();
             this.previousMoved = this.moved;
             this.square.removePiece();
             square.setPiece(this);
@@ -66,9 +66,9 @@ public abstract class Piece {
     public void goBack() {
         if (this.previousSquare == null)
             throw new UnsupportedOperationException("Cannot go back");
-        this.square.setPiece(this.nextSquaresPreviousPiece);
+        this.previousSquare.setPiece(this);
+        this.square.setPiece(this.previousPiece);
         this.square = this.previousSquare;
-        this.square.setPiece(this);
         this.moved = this.previousMoved;
         this.previousSquare = null;
     }
@@ -139,6 +139,20 @@ public abstract class Piece {
      */
     public boolean isSafe(Square square) {
         return this.board.isSafe(square, this.color);
+    }
+
+    /**
+     * Change this piece
+     * @param constructor The constructor used to create a new piece
+     *                    that will replace this piece
+     */
+    public void changeTo(PieceConstructor constructor) {
+        Piece other = constructor.construct(this.board, this.square, this.color);
+        other.moved = this.moved;
+        other.previousSquare = this.square;
+        other.previousPiece = this;
+        other.previousMoved = this.moved;
+        other.square.setPiece(other);
     }
 
     /**
