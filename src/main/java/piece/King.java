@@ -5,6 +5,7 @@ import board.Coordinate;
 import board.Square;
 import chess.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,27 +36,34 @@ public class King extends Piece {
         if (this.hasMoved()) return null;
         boolean destinationValid = false;
         Rook validRook = null;
-        for (int i = 0; i < 2; i++) {
+        ArrayList<Square> path = new ArrayList<>();
+        out: for (int i = 0; i < 2; i++) {
+
+            // Clear the path
+            path.clear();
             Coordinate c = this.getSquare().getCoordinate();
             for (int j = 1; Board.isInBoard(c); j++) {
 
-                // Check if destination is valid
+                // Add to path
                 Square s = this.getBoard().getSquare(c);
+                path.add(s);
+
+                // Check if destination is valid
                 if (j == 3 && square.equals(s)) destinationValid = true;
-                else break;
+                else if (j == 3) break;
 
                 // Check if rook is there and valid
                 Piece p = s.getPiece();
                 if (p instanceof Rook && !p.hasMoved()) {
                     validRook = (Rook) p;
-                    break;
+                    break out;
                 }
                 c = new Coordinate(i == 0 ? this.xRight(j) : this.xLeft(j), c.getY());
             }
         }
 
         // Return if valid
-        return destinationValid ? validRook : null;
+        return destinationValid && Board.isPathClear(path) ? validRook : null;
     }
 
     @Override
