@@ -111,7 +111,7 @@ public class Game {
                     // Promote pawns at end
                     else if (isFromPawnToEnd) {
                         String key = promotionRequested ? move[2] : "Q";
-                        to.setPiece(this.promotions.get(key).construct(this.board, to, currentPlayer.getColor()));
+                        to.getPiece().changeTo(this.promotions.get(key));
                     }
 
                     // Current player wins if other player is in checkmate
