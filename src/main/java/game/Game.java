@@ -88,9 +88,13 @@ public class Game {
                     if (!from.hasPiece() || from.getPiece().getColor() != this.currentPlayer.getColor())
                         throw new IllegalMoveException("You can only move your own piece");
 
-                    // If 3rd argument, check if valid
-                    if (move.length > 2 && !drawOffered && !promotionRequested)
-                        throw new IllegalMoveException("Not a valid option: " + move[2]);
+                    // If more than 2 arguments, check if valid
+                    int badOption = -1;
+                    if (move.length == 4) {
+                        if (!promotionRequested) badOption = 2;
+                        else if (!drawOffered) badOption = 3;
+                    } else if (move.length == 3 && !drawOffered && !promotionRequested) badOption = 2;
+                    if (badOption != -1) throw new IllegalMoveException("Not a valid option: " + move[badOption]);
                     if (promotionRequested && !isFromPawnToEnd)
                         throw new IllegalMoveException("You cannot request for promotion in this move");
 
