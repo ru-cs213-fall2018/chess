@@ -62,6 +62,8 @@ public abstract class Piece {
     /**
      * Restores previous state of the board after this
      * piece moved
+     * @throws UnsupportedOperationException If the piece cannot go back because
+     * it only supports going back one move
      */
     public void goBack() {
         if (this.previousSquare == null)
