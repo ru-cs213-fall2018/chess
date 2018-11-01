@@ -4,6 +4,7 @@ import board.Board;
 import board.Coordinate;
 import board.Square;
 import chess.Color;
+import sun.plugin.dom.core.CoreConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
  */
 public class Pawn extends Piece {
 
+    private boolean lastMoveDoube;
+    private Pawn enpassantPawn;
+
     /**
      * Creates a new pawn
      * @param board Board the pawn is on
@@ -22,6 +26,34 @@ public class Pawn extends Piece {
      */
     public Pawn(Board board, Square square, Color color) {
         super(board, square, color, 3);
+        this.lastMoveDoube = false;
+        this.enpassantPawn = null;
+    }
+
+    @Override
+    public String move(Square square) {
+        this.lastMoveDoube = this.isDoubleMove(square);
+        this.enpassantPawn = this.canEnpassant(square);
+        if (this.enpassantPawn != null) {
+            this.enpassantPawn.getSquare().removePiece();
+            this.forceMove(square);
+            return null;
+        }
+        return super.move(square);
+    }
+
+    @Override
+    public void goBack() {
+        if (this.enpassantPawn != null)
+            this.enpassantPawn.getSquare().setPiece(this.enpassantPawn);
+        super.goBack();
+    }
+
+    @Override
+    public String canMove(Square square) {
+        String error = super.canMove(square);
+        if (error == null) return error;
+        return this.canEnpassant(square) != null ? null : error;
     }
 
     @Override
@@ -46,6 +78,39 @@ public class Pawn extends Piece {
         else if (pathNum != 1 && !path.get(path.size() - 1).hasPiece())
             return "A pawn can only attack in that direction";
         return null;
+    }
+
+    /**
+     * Checks if going to square is a double move
+     * @param square Destination
+     * @return True if it is a double move, else false
+     */
+    private boolean isDoubleMove(Square square) {
+        Coordinate from = this.getSquare().getCoordinate();
+        Coordinate dub = new Coordinate(from.getX(), this.yForward(2));
+        Coordinate to = square.getCoordinate();
+        return to.equals(dub);
+    }
+
+    /**
+     * @param square The destination
+     * @return The pawn to remove if this pawn can make
+     * enpassant move to square, else null
+     */
+    private Pawn canEnpassant(Square square) {
+        Coordinate from = this.getSquare().getCoordinate();
+        Coordinate to = square.getCoordinate();
+        Coordinate leftForward = new Coordinate(this.xLeft(1), this.yForward(1));
+        Coordinate left = new Coordinate(this.xLeft(1), from.getY());
+        Coordinate rightForward = new Coordinate(this.xRight(1), this.yForward(1));
+        Coordinate right = new Coordinate(this.xRight(1), from.getY());
+        Square pawnSquare = null;
+        if (to.equals(leftForward)) pawnSquare = this.getBoard().getSquare(left);
+        else if (to.equals(rightForward)) pawnSquare = this.getBoard().getSquare(right);
+        else return null;
+        if (pawnSquare == null || !(pawnSquare.getPiece() instanceof Pawn)) return null;
+        Pawn pawn = (Pawn) pawnSquare.getPiece();
+        return pawn.lastMoveDoube ? pawn : null;
     }
 
     /**
