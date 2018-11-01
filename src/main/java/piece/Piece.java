@@ -47,16 +47,22 @@ public abstract class Piece {
      */
     public String move(Square square) {
         String ret = this.canMove(square);
-        if (ret == null) {
-            this.previousSquare = this.square;
-            this.previousPiece = square.getPiece();
-            this.previousMoved = this.moved;
-            this.square.removePiece();
-            square.setPiece(this);
-            this.square = square;
-            this.moved = true;
-        }
+        if (ret == null) this.forceMove(square);
         return ret;
+    }
+
+    /**
+     * Move this piece without any checks
+     * @param square The destination
+     */
+    protected void forceMove(Square square) {
+        this.previousSquare = this.square;
+        this.previousPiece = square.getPiece();
+        this.previousMoved = this.moved;
+        this.square.removePiece();
+        square.setPiece(this);
+        this.square = square;
+        this.moved = true;
     }
 
     /**

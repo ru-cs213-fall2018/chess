@@ -144,4 +144,96 @@ public class King extends Piece {
     public String toString() {
         return super.toString() + "K";
     }
+
+    /**
+     * Class to handle kings castling
+     * @author Ammaar Muhammad Iqbal
+     */
+    private class Castle {
+
+        private boolean can;
+        private King king;
+        private Square destination;
+        private Rook rook;
+        private Square rookDestination;
+
+        /**
+         * Creates castling options for a king
+         * @param king The king intending to castle
+         * @param square The destination of the king
+         */
+        public Castle(King king, Square square) {
+
+            // Check if king has moved already
+            if (king.hasMoved()) {
+                this.can = false;
+                return;
+            }
+            boolean destinationValid = false;
+            this.rook = null;
+            ArrayList<Square> path = new ArrayList<>();
+            out: for (int i = 0; i < 2; i++) {
+
+                // Clear the path
+                path.clear();
+                Coordinate c = king.getSquare().getCoordinate();
+                for (int j = 1; Board.isInBoard(c); j++) {
+
+                    // Add to path
+                    Square s = king.getBoard().getSquare(c);
+                    path.add(s);
+
+                    // Check if destination is valid
+                    if (j == 3 && square.equals(s)) destinationValid = true;
+                    else if (j == 3) break;
+
+                    // Check if rook is there and valid
+                    Piece p = s.getPiece();
+                    if (p instanceof Rook && !p.hasMoved()) {
+                        this.rook = (Rook) p;
+                        break out;
+                    }
+                    c = new Coordinate(i == 0 ? king.xRight(j) : king.xLeft(j), c.getY());
+                }
+            }
+
+            // Fill fields
+            this.can = destinationValid && Board.isPathClear(path) && this.rook != null
+                    && !king.isInCheck() && !king.isInCheck(path.get(1)) && !king.isInCheck(path.get(2));
+            if (this.can) {
+                this.king = king;
+                this.destination = path.get(2);
+                this.rookDestination = path.get(1);
+            }
+        }
+
+        /**
+         * @return True if king can castle to square,
+         * else returns false
+         */
+        public boolean can() {
+            return can;
+        }
+
+        /**
+         * Castle the king to square if it can
+         * @return True if castled, false otherwise
+         */
+        public boolean go() {
+            if (this.can()) {
+                this.king.forceMove(this.destination);
+                this.rook.forceMove(this.rookDestination);
+            }
+            return this.can();
+        }
+
+        /**
+         * Revert the castle
+         * @throws UnsupportedOperationException If king or rook can't go back
+         */
+        public void goBack() {
+            this.king.goBack();
+            this.rook.goBack();
+        }
+    }
 }
