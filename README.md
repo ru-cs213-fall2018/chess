@@ -27,15 +27,19 @@ This is not an Eclipse project. This is a Gradle project and I have been given p
 
 * All legitimate basic moves for all pieces
 * Castling
-* Enpassant
+* En passant
 * Promotion
 * Identification of check
-* Identifcation of checkmate
+* Identification of checkmate
 * Identification of illegal move (print "Illegal move, try again")
 * Resign
 * Draw
 * Drawing board display as specified
 * Stalemate
+
+## JavaDoc
+
+The JavaDoc is stored in the `docs` directory.
 
 ## Credits
 
