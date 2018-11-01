@@ -13,7 +13,7 @@ This is not an Eclipse project. This is a Gradle project and I have been given p
 
     gradlew clean
     gradlew jar
-    
+
 ### Compile in UN*X (Linux/macOS/BSD)
 
     ./gradlew clean
