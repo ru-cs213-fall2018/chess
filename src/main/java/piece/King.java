@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class King extends Piece {
 
+    private Castle lastCastle;
+
     /**
      * Creates a king
      * @param board Board the king is on
@@ -22,10 +24,39 @@ public class King extends Piece {
      */
     public King(Board board, Square square, Color color) {
         super(board, square, color, 8);
+        this.lastCastle = null;
     }
 
+    @Override
+    public String move(Square square) {
+
+        // Try to castle
+        Castle castle = new Castle(this, square);
+        if (castle.go()) {
+            this.lastCastle = castle;
+            return null;
         }
 
+        // Try regular move
+        String error = super.canMove(square);
+        if (error == null) {
+            this.forceMove(square);
+            this.lastCastle = null;
+        }
+        return error;
+    }
+
+    @Override
+    public String canMove(Square square) {
+        String error = super.canMove(square);
+        if (error == null) return error;
+        return new Castle(this, square).can() ? null : error;
+    }
+
+    @Override
+    public void goBack() {
+        if (this.lastCastle != null) this.lastCastle.goBack();
+        else super.goBack();
     }
 
     @Override
