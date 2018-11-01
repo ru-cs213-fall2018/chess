@@ -120,6 +120,12 @@ public class Game {
                         break;
                     }
 
+                    // Game is draw if other player is in stalemate
+                    if (this.otherPlayer.getKing().isInStaleMate()) {
+                        System.out.println("\n" + this.board + "\n\n" + " Stalemate: draw");
+                        break;
+                    }
+
                     // Let other player know if s/he is in check
                     if (this.otherPlayer.getKing().isInCheck())
                         System.out.println(("\n" + this.otherPlayer + " is in check"));
