@@ -1,5 +1,7 @@
 # Assignment 2: 2-Player Chess
 
+This is not an Eclipse project. This is a Gradle project and I have been given permission to do so given that I provide all the information for you to run my code.
+
 ## How to Run
 
 ### Prerequisites
@@ -20,3 +22,21 @@
 ### Run
 
     java -jar build/libs/chess-1.0.jar
+
+## Implemented Features
+
+* All legitimate basic moves for all pieces
+* Castling
+* Enpassant
+* Promotion
+* Identification of check
+* Identifcation of checkmate
+* Identification of illegal move (print "Illegal move, try again")
+* Resign
+* Draw
+* Drawing board display as specified
+* Stalemate
+
+## Credits
+
+Group # 75
