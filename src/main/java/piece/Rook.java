@@ -44,8 +44,7 @@ public class Rook extends Piece {
     }
 
     /**
-     * ASCII representation of the rook
-     * @return
+     * @return ASCII representation of the rook
      */
     @Override
     public String toString() {

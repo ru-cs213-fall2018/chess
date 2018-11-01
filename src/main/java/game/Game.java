@@ -24,6 +24,7 @@ public class Game {
 
     /**
      * Create a new game
+     * @throws BadInputException If can't find player kings
      */
     public Game() throws BadInputException {
         this.board = new Board();
