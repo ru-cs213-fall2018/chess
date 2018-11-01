@@ -131,6 +131,20 @@ public class King extends Piece {
     }
 
     /**
+     * Checks if the king is in stalemate
+     * @return True if the king is, false otherwise
+     */
+    public boolean isInStaleMate() {
+        if (this.isInCheck()) return false;
+        return this.getBoard().isEverySquare(s1 -> {
+            Piece p = s1.getPiece();
+            if (s1.hasPiece() && p.getColor() == this.getColor())
+                return this.getBoard().isEverySquare(s2 -> p.canMove(s2) != null);
+            else return true;
+        });
+    }
+
+    /**
      * @return ASCII representation of the kning
      */
     @Override
