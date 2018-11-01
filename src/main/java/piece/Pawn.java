@@ -4,7 +4,6 @@ import board.Board;
 import board.Coordinate;
 import board.Square;
 import chess.Color;
-import sun.plugin.dom.core.CoreConstants;
 
 import java.util.ArrayList;
 import java.util.List;
